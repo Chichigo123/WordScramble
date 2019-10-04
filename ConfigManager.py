@@ -71,7 +71,7 @@ class DerivedConfigManager(BaseConfigManager):
         if state == 'Welcome':
             super().createFrameConfig()
         elif state == 'Choose':
-            super().createFrameConfig(height = [800], width = [800], bg = ['magenta'], relx = [0],
+            super().createFrameConfig(height = [800], width = [800], bg = ['white'], relx = [0],
                                       rely = [0], relief = [tk.SUNKEN], borderwidth = [1])
     def createButtonConfig(self, state):
 
@@ -81,4 +81,11 @@ class DerivedConfigManager(BaseConfigManager):
                                      fg = ['white', 'white'], font = [["Broadway", 20, "bold"], ["Broadway", 20, "bold"]],
                                      relief = [[tk.SUNKEN], [tk.SUNKEN]], text = ['StartWelcomeFrame1', 'InstructionWelcomeFrame0'],
                                      cursor = ['spider', 'heart'])
+        elif state == 'Choose':
+            super().createButtonConfig(height=[.25, .15], width=[0.5, 0.5], relx=[0.25, 0.25],
+                                       rely=[0.1, 0.65], bd=[3, 3], bg=['pink', 'gray'],
+                                       fg=['white', 'white'], font=[["Broadway", 20, "bold"], ["Broadway", 20, "bold"]],
+                                       relief=[[tk.SUNKEN], [tk.SUNKEN]],
+                                       text=['New Player ChooseFrame0', 'Continue GameChooseFrame0'],
+                                       cursor=['spider', 'heart'])
 
