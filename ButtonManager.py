@@ -46,8 +46,22 @@ class DerivedButtonManager(ButtonManager):
         self.action = 'Choose'
 
     def callAction_ChooseFrame0Button0(self):
-        print('PlaterDetails')
         self.action = 'PlayerDetails'
+
+    def callAction_ChooseFrame0Button1(self):
+        self.action = 'GameStart'
+
+    def callAction_PlayerDetailsFrame0Button0(self):
+        self.action = 'VerifyPlayerDetails'
+        self.previousAction = 'PlayerDetails'
+        self.nextAction = 'GameStart'
+        # self.action = 'PlayerDetails'
+
+    def setStateOneStepBack(self, state):
+        self.action = state
+
+    def setStateOneStepForward(self, state):
+        self.action = state
 
     def configureButtonCallActions(self, ):
 
@@ -61,5 +75,7 @@ class DerivedButtonManager(ButtonManager):
         if state == 'Welcome' :
             # Start and Instruction Buttons
             super().__init__()
-            self.buttons = super().createBasicButtons(config.buttonConfig, parentFrames, state)
-            self.configureButtonCallActions()
+
+            if config.buttonConfig:
+                self.buttons = super().createBasicButtons(config.buttonConfig, parentFrames, state)
+                self.configureButtonCallActions()
