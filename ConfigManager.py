@@ -2,6 +2,7 @@ import tkinter as tk
 
 # Verify only the 'Name' Textbox
 specialStates = {'VerifyPlayerDetails': ['PlayerDetailsFrame0TextBox0']}
+numberWordsPerColumn = 7
 
 class BaseConfigManager():
 
@@ -21,11 +22,11 @@ class BaseConfigManager():
         # upper part will contain the words
         # lower part will contain the text box
         self.frameConfig = {
-            'height': height or [640, 160],
+            'height': height or [660, 140],
             'width': width or [800, 800],
             'bg': bg or ['#b2e9f0', '#b2e9a0'],
             'relx': relx or [0, 0],
-            'rely':  rely or [0, 0.8],
+            'rely':  rely or [0, 0.85],
             'relief': relief or [tk.SUNKEN, tk.SUNKEN],
             'borderwidth': borderwidth or [0, 0]
         }
@@ -59,7 +60,7 @@ class BaseConfigManager():
             'fg': fg or ['#2A0100']
         }
 
-    def createTextBoxConfig(self, width = [], font = [], relx = [], rely = [],  fg = [], bg = [], text = []):
+    def createTextBoxConfig(self, width = [], font = [], relx = [], rely = [],  fg = [], bg = [], text = [], relief = []):
         self.textBoxConfig = {
             'width': width or [50],
             'font': font or [["Broadway", 20, "bold"]],
@@ -67,7 +68,8 @@ class BaseConfigManager():
             'relx': relx or [0],
             'rely': rely or [0],
             'fg': fg or ['#2A0100'],
-            'text': text or ['None']
+            'text': text or ['None'],
+            'relief': relief or [tk.SUNKEN]
         }
 
     def __init__(self):
@@ -124,17 +126,51 @@ class DerivedConfigManager(BaseConfigManager):
                                        rely=[0.1, 0.65], bd=[3, 3], bg=['#E0909F', '#E0909F'],
                                        fg=['#2A0100', '#2A0100'], font=[["Broadway", 20, "bold"], ["Broadway", 20, "bold"]],
                                        relief=[[tk.SUNKEN], [tk.SUNKEN]],
-                                       text=['New Player ChooseFrame0Button0', 'Take me to the GameChooseFrame0Button1'],
+                                       text=['New PlayerChooseFrame0Button0', 'Take me to the GameChooseFrame0Button1'],
                                        cursor=['spider', 'heart'])
 
         elif state == 'PlayerDetails':
             super().createButtonConfig(height=[.05], width=[0.25], relx=[0.2],
                                        rely=[0.25], bd=[1], bg=['#E0909F'],
                                        fg=['#2A0100'], font=[["Helvetica", 10, "bold"]],
-                                       relief=[[tk.SUNKEN]],
+                                       relief=[[tk.RAISED]],
                                        text=['Submit PlayerDetailsFrame0Button0'],
                                        cursor=['spider'])
 
+    def createWordGameLabelConfig(self, state, wordAnswers, wordAnswer):
+        self.wordLabelConfig = {}
+
+        numberOfAnswers = len(wordAnswers)
+        font = [["Algerian", 20]] * numberOfAnswers
+        bg = ['#FFFFFF'] * numberOfAnswers
+        relx = []
+        rely = []
+        text = []
+        fg = ['#FFFFFF'] * numberOfAnswers
+
+        relxPos = .05
+        relyPos = 0.05
+        if state == 'GameStart':
+           for idx, word in enumerate(wordAnswers):
+                if (idx % numberWordsPerColumn == 0 and idx != 0):
+                    relxPos += .25
+                    relyPos = .15
+                else:
+                    relyPos += .1
+                relx.append(relxPos)
+                rely.append(relyPos)
+
+                text.append(word + 'GameStartFrameLabel' + str(idx))
+
+        font.append(["Algerian", 35, "bold"])
+        bg.append('#b2e9f0')
+        relx.append(0.05)
+        rely.append(0.03)
+        text.append(wordAnswer + 'GameStartFrameLabel' + str(numberOfAnswers))
+        fg.append('black')
+
+
+        self.wordLabelConfig = super().createLabelConfig(font, bg, relx, rely, text, fg)
 
     def createLabelConfig(self, state):
         self.labelConfig = {}
@@ -159,4 +195,10 @@ class DerivedConfigManager(BaseConfigManager):
                                         relx = [.2, .2, .2], rely = [.1, .15, .2], fg = ['#2A0110', '#2A0110', '#2A0110'],
                                         bg = ['#b2e9b0', '#b2e9b0', '#b2e9b0'],
                                         text = ['Name PlayerDetailsFrame0TextBox0', 'Age PlayerDetailsFrame0TextBox1',
-                                                'emailaddress PlayerDetailsFrame0TextBox2'])
+                                                'emailaddress PlayerDetailsFrame0TextBox2'],
+                                        relief = [tk.GROOVE, tk.GROOVE, tk.GROOVE])
+        if state == 'GameStart':
+            super().createTextBoxConfig(width=[20], font=[["Algerian", 30]],
+                                        relx=[.05], rely=[.2], fg=['#2A0110'],
+                                        bg=['#FFFFFF'], text=['GameStart Frame1TextBox0'],
+                                        relief=[tk.RAISED])

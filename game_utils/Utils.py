@@ -1,3 +1,4 @@
+import tkinter as tk
 import numpy
 from tkinter import messagebox
 
@@ -25,4 +26,12 @@ def verifyPlayerDetails(textBoxes, buttons, textBoxNames):
                     name = textBox[0][0].get()
                     messagebox.showinfo("Player Details Successful", f"Welcome Player {name}")
                     return True
+
+
+def checkIfWordIsFound(event, wordAnswers, textBoxes):
+    textBoxes = numpy.array(textBoxes, dtype=object)
+    textBox = textBoxes[textBoxes[:, 1] == 'GameStartFrame1TextBox0']
+    if textBox.shape[0] > 0 and textBox[0][0].get().upper() in wordAnswers:
+        print(textBox[0][0].get().upper())
+        textBox[0][0].delete(0, tk.END)
 

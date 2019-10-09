@@ -15,7 +15,7 @@ class FrameManager():
         for idx, frame in enumerate(frames):
             setattr(self.frames, state + 'Frame' + str(idx), frame)
 
-    def createBasicFrames(self, config, parentWindow):
+    def createBasicFrames(self, config, parentWindow, state):
 
         framesParam = list(zip(config.get("height"), config.get("width"),
                                config.get("bg"), config.get("relx"),
@@ -31,8 +31,8 @@ class FrameManager():
             frame.place(relx = frameParam[3], rely = frameParam[4])
             frames.append(frame)
 
-        return frames
-
+        self.runningFrames = frames
+        self.saveFrameNames(frames, state)
 
 
 class DerivedFrameManager(FrameManager):
@@ -40,8 +40,4 @@ class DerivedFrameManager(FrameManager):
     def __init__(self, config, parentWindow, state):
         self.frames =  type('', (), {})()
 
-        frames = super().createBasicFrames(config.frameConfig, parentWindow)
-        self.runningFrames = frames
-
-        self.saveFrameNames(frames, state)
-
+        super().createBasicFrames(config.frameConfig, parentWindow, state)

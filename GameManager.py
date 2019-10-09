@@ -4,6 +4,7 @@ from FrameManager import *
 from ButtonManager import *
 from LabelManager import *
 from TextBoxManager import *
+from WordManager import *
 
 class BaseGameManager():
 
@@ -21,33 +22,36 @@ class DerivedGameManager(BaseGameManager):
 
         self.currentWindow.window.mainloop()
 
-
     def updateConfiguration(self):
         self.currentConfig.createFrameConfig(self.state)
         self.currentFrames.destroyFrames()
-        self.currentFrames.createBasicFrames(self.currentConfig.frameConfig, self.currentWindow.window)
         if self.currentConfig.frameConfig:
-          self.currentFrames.saveFrameNames(self.currentFrames.runningFrames, self.state)
+            self.currentFrames.createBasicFrames(self.currentConfig.frameConfig, self.currentWindow.window, self.state)
+
 
         self.currentConfig.createButtonConfig(self.state)
         if self.currentConfig.buttonConfig:
             self.currentFrames.currentButtons.buttons = \
-                self.currentFrames.currentButtons.createBasicButtons(self.currentConfig.buttonConfig, self.currentFrames, self.state)
+                self.currentFrames.currentButtons.createBasicButtons(self.currentConfig.buttonConfig, self.currentFrames.frames, self.state)
             self.currentFrames.currentButtons.configureButtonCallActions()
 
-        self.currentConfig.createLabelConfig(self.state)
+        if self.state == 'GameStart':
+            wordAnswers, wordAnswer = self.wordManager.updateWordsList('easy')
+            self.currentConfig.createWordGameLabelConfig(self.state, wordAnswers, wordAnswer)
+            self.currentWindow.window.bind('<Return>', lambda event:
+                                            utils.checkIfWordIsFound(event, wordAnswers, self.currentFrames.currentTextBoxes.textBoxes))
+        else:
+            self.currentConfig.createLabelConfig(self.state)
+
         if self.currentConfig.labelConfig:
             self.currentFrames.currentLabels.labels = \
-                self.currentFrames.currentLabels.createBasicLabels(self.currentConfig.labelConfig, self.currentFrames, self.state)
+                self.currentFrames.currentLabels.createBasicLabels(self.currentConfig.labelConfig, self.currentFrames.frames, self.state)
 
         self.currentConfig.createTextBoxConfig(self.state)
         if self.currentConfig.textBoxConfig:
             self.currentFrames.currentTextBoxes.textBoxes = \
-                self.currentFrames.currentTextBoxes.createBasicTextBoxes(self.currentConfig.textBoxConfig, self.currentFrames,
+                self.currentFrames.currentTextBoxes.createBasicTextBoxes(self.currentConfig.textBoxConfig, self.currentFrames.frames,
                                                                          self.state)
-            x = 0
-
-        print('Config update')
 
     def update_clock(self):
 
@@ -65,7 +69,7 @@ class DerivedGameManager(BaseGameManager):
                 self.state = self.currentFrames.currentButtons.action
                 self.updateConfiguration()
 
-        self.currentWindow.window.after(3000, self.update_clock)
+        self.currentWindow.window.after(1000, self.update_clock)
 
     def prepareConfiguration(self):
         #Create the basic objects
@@ -90,6 +94,11 @@ class DerivedGameManager(BaseGameManager):
         # Get Text Box Configuration based on current state
         # Create the TextBox Object
         self.currentFrames.currentTextBoxes = DerivedTextBoxManager(self.currentConfig, self.currentFrames.frames, self.state)
+
+        # Get Word Manager Configuration based on current state
+        # Create the WordManager Object
+        self.wordManager = DerivedWordManager()
+
         self.update_clock()
 
 

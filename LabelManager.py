@@ -22,6 +22,7 @@ class BaseLabelManager():
 
 class DerivedLabelManager(BaseLabelManager):
 
+
     def createBasicLabels(self, config, parentFrames, state):
         self.labels = super().createBasicLabels(config, parentFrames, state)
 
