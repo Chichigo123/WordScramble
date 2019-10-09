@@ -16,36 +16,41 @@ class ButtonManager():
                                 config.get("relief"), config.get("text"),
                                 config.get("cursor")))
         buttons = []
-        for buttonParam in buttonsParam:
-            correctFrameText, correctText = utils.getCorrectFrame(parentFrames, buttonParam[9], state)
-            correctFrame = getattr(parentFrames, correctFrameText, None)
-            button = tk.Button(correctFrame, bd = buttonParam[4], bg = buttonParam[5],
-                               fg = buttonParam[6], font = buttonParam[7],
-                               relief = buttonParam[8], text = correctText,
-                               cursor = buttonParam[10])
-                             #  command=lambda: self.buttonCallAction(text))
-            button.place(relheight=buttonParam[0],
-                         relwidth=buttonParam[1],
-                         relx=buttonParam[2],
-                         rely=buttonParam[3])
-            buttons.append([button, correctFrameText])
+
+        if len(buttonsParam) > 0:
+            for buttonParam in buttonsParam:
+                correctFrameText, correctText, correctFunctionName = utils.getCorrectFrame(parentFrames, buttonParam[9], state)
+                correctFrame = getattr(parentFrames, correctFrameText, None)
+                button = tk.Button(correctFrame, bd = buttonParam[4], bg = buttonParam[5],
+                                   fg = buttonParam[6], font = buttonParam[7],
+                                   relief = buttonParam[8], text = correctText,
+                                   cursor = buttonParam[10])
+                                 #  command=lambda: self.buttonCallAction(text))
+                button.place(relheight=buttonParam[0],
+                             relwidth=buttonParam[1],
+                             relx=buttonParam[2],
+                             rely=buttonParam[3])
+                buttons.append([button, correctFunctionName])
 
         return buttons
 
 
 class DerivedButtonManager(ButtonManager):
 
-    def callAction_WelcomeFrame0(self):
+    def callAction_WelcomeFrame0Button0(self):
         messagebox.showinfo("WordScramble Instructions", "Unscramble the letters and find the longest word!")
 
 
-    def callAction_WelcomeFrame1(self):
+    def callAction_WelcomeFrame1Button1(self):
         messagebox.showinfo("WordScramble Start", "Welcome to Word Scramble!")
         self.action = 'Choose'
 
+    def callAction_ChooseFrame0Button0(self):
+        print('PlaterDetails')
+        self.action = 'PlayerDetails'
+
     def configureButtonCallActions(self, ):
 
-        functionDict = {}
         for idx, (button, frameText) in enumerate(self.buttons):
 
             if frameText is not None:

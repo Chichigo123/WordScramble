@@ -1,12 +1,13 @@
 class BasePlayer():
 
-    def __init__(self):
-        pass
+    def __init__(self, name):
+        self.name = name
+        self.score = 0
 
 
 class DerivedPlayer(BasePlayer):
 
 
-    def __init__(self):
+    def __init__(self, name):
 
-        pass
+        super().__init__(name)

@@ -5,6 +5,7 @@ def getCorrectFrame( parentFrames, buttonText, state):
 
         frameNumberIdx = buttonText.find('Frame')
         correctFrame = state + 'Frame' + str(buttonText[frameNumberIdx + 5])
+        correctFunctionName = state + 'Frame' + buttonText[frameNumberIdx + 5: ]
 
-    return correctFrame, correctText
+    return correctFrame, correctText, correctFunctionName
 

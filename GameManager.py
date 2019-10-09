@@ -25,19 +25,24 @@ class DerivedGameManager(BaseGameManager):
         self.currentConfig.createFrameConfig(self.state)
         self.currentFrames.destroyFrames()
         self.currentFrames.createBasicFrames(self.currentConfig.frameConfig, self.currentWindow.window)
-        self.currentFrames.saveFrameNames(self.currentFrames.runningFrames, self.state)
+        if self.currentConfig.frameConfig:
+          self.currentFrames.saveFrameNames(self.currentFrames.runningFrames, self.state)
 
         self.currentConfig.createButtonConfig(self.state)
-        self.currentFrames.currentButtons.createBasicButtons(self.currentConfig.buttonConfig, self.currentFrames, self.state)
+        if self.currentConfig.buttonConfig:
+            self.currentFrames.currentButtons.buttons = self.currentFrames.currentButtons.createBasicButtons(self.currentConfig.buttonConfig, self.currentFrames, self.state)
+            self.currentFrames.currentButtons.configureButtonCallActions()
+
+        print('Config update')
 
     def update_clock(self):
 
         # Checks if a button action is called and requests the game manager to update frames
-        if self.state == self.currentFrames.currentButtons.action:
-            self.currentWindow.window.after(3000, self.update_clock)
-        else:
+        if self.state != self.currentFrames.currentButtons.action:
             self.state = self.currentFrames.currentButtons.action
             self.updateConfiguration()
+
+        self.currentWindow.window.after(3000, self.update_clock)
 
     def prepareConfiguration(self):
 
