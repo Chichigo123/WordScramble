@@ -57,12 +57,18 @@ class DerivedGameManager(BaseGameManager):
 
         # Checks if a button action is called and requests the game manager to update frames
         if self.currentFrames.currentButtons.action in specialStates.keys():
-            if utils.verifyPlayerDetails(
-                    self.currentFrames.currentTextBoxes.textBoxes, self.currentFrames.currentButtons.buttons,
-                    specialStates.get(self.currentFrames.currentButtons.action)):
-                self.currentFrames.currentButtons.setStateOneStepForward(self.currentFrames.currentButtons.nextAction)
-            else:
-                self.currentFrames.currentButtons.setStateOneStepBack(self.currentFrames.currentButtons.previousAction)
+            textBoxAction = ''
+            for button, frameText in self.currentFrames.currentButtons.buttons:
+                if "PlayerDetailsFrame0Button0" == frameText:
+                    textBoxAction = "VerifyNameContent"
+
+            if textBoxAction == 'VerifyNameContent':
+                textInTextBox = self.currentFrames.currentTextBoxes.getText(action = textBoxAction,
+                                                                            textBoxName = specialStates.get(self.currentFrames.currentButtons.action))
+                if utils.verifyPlayerDetails(textInTextBox, textBoxAction):
+                    self.currentFrames.currentButtons.setStateOneStepForward(self.currentFrames.currentButtons.nextAction)
+                else:
+                    self.currentFrames.currentButtons.setStateOneStepBack(self.currentFrames.currentButtons.previousAction)
 
         else:
             if self.state != self.currentFrames.currentButtons.action:

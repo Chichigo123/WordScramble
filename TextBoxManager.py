@@ -1,5 +1,8 @@
 import tkinter as tk
+from tkinter import messagebox
 import game_utils.Utils as utils
+import numpy
+
 class BaseTextBoxManager():
     def createBasicTextBoxes(self, config, parentFrames, state):
         textBoxesParam = list(zip(config.get("width"), config.get("font"), config.get("relx"), config.get("rely"),
@@ -23,6 +26,17 @@ class BaseTextBoxManager():
         pass
 
 class DerivedTextBoxManager(BaseTextBoxManager):
+
+    def getText(self, action, textBoxName):
+        textBoxes = numpy.array(self.textBoxes, dtype=object)
+        if action == 'VerifyNameContent':
+            textBox = textBoxes[textBoxes[:, 1] == textBoxName]
+
+            if textBox.shape[0] > 0:
+                return textBox[0][0].get()
+
+            return ''
+
     def createBasicTextBoxes(self, config, parentFrames, state):
         self.textBoxes = super().createBasicTextBoxes(config, parentFrames, state)
         return self.textBoxes
