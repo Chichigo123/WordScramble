@@ -18,8 +18,8 @@ wordAnswers = {
               'YEAN', 'YEAH',
               'ANY', 'YEN', 'HAY', 'AYE', 'HEN'],
     "ROAEGN": ['ORANGE',
-               'GEAR', 'RAGE', 'GONE',
-               'ORE', 'ARE', 'RAN', 'RAG'],
+               'GEAR', 'RAGE', 'GONE', 'NEAR', 'GORE',
+               'ORE', 'ARE', 'RAN', 'RAG', 'EAR'],
     "RANGE": ['ARE', 'AGE']
 }
 
@@ -33,8 +33,8 @@ class BaseWordManager():
         wordToPlay = ''
         while True:
             randomIndex = random.randint(0, len(wordList) - 1)
-            # wordToPlay = wordList[randomIndex]
-            wordToPlay = wordList[3]
+            wordToPlay = wordList[randomIndex]
+            # wordToPlay = wordList[3]
             if wordToPlay not in self.alreadyPlayed:
                 answers = wordAnswers.get(wordToPlay)
                 answers.sort(key = lambda x: [len(x), x], reverse=True)
@@ -49,7 +49,7 @@ class BaseWordManager():
 
 class DerivedWordManager(BaseWordManager):
     def checkIfGuessedAll(self):
-        self.alreadyGuessed.sort(key=lambda x: x, reverse=True)
+        self.alreadyGuessed.sort(key=lambda x:  [len(x), x], reverse=True)
         if self.answers == self.alreadyGuessed:
             return True
         return False

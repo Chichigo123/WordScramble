@@ -192,13 +192,13 @@ class DerivedConfigManager(BaseConfigManager):
 
         if state == 'PlayerDetails':
             super().createTextBoxConfig(width = [30, 30, 30], font = [["Broadway", 10], ["Broadway", 10], ["Broadway", 10]],
-                                        relx = [.2, .2, .2], rely = [.1, .15, .2], fg = ['#2A0110', '#2A0110', '#2A0110'],
+                                        relx = [.2, .2, .2], rely = [.1, .15, .2], fg = ['#e9f1f7', '#e9f1f7', '#e9f1f7'],
                                         bg = ['#b2e9b0', '#b2e9b0', '#b2e9b0'],
                                         text = ['Name PlayerDetailsFrame0TextBox0', 'Age PlayerDetailsFrame0TextBox1',
                                                 'emailaddress PlayerDetailsFrame0TextBox2'],
                                         relief = [tk.GROOVE, tk.GROOVE, tk.GROOVE])
         if state == 'GameStart':
-            super().createTextBoxConfig(width=[20], font=[["Algerian", 30]],
-                                        relx=[.05], rely=[.2], fg=['#2A0110'],
+            super().createTextBoxConfig(width=[20], font=[["Arial", 30]],
+                                        relx=[.05], rely=[.2], fg=['#e9f1f7'],
                                         bg=['#FFFFFF'], text=['GameStart Frame1TextBox0'],
                                         relief=[tk.RAISED])

@@ -4,6 +4,11 @@ import game_utils.Utils as utils
 import numpy
 
 class BaseTextBoxManager():
+
+    def clearTextBox(self, event):
+        event.widget.delete(0, tk.END)
+        event.widget.configure(fg =  '#2A0110')
+
     def createBasicTextBoxes(self, config, parentFrames, state):
         textBoxesParam = list(zip(config.get("width"), config.get("font"), config.get("relx"), config.get("rely"),
                                config.get("fg"), config.get("bg"), config.get("text"), config.get("relief")))
@@ -16,8 +21,11 @@ class BaseTextBoxManager():
                 correctFrame = getattr(parentFrames, correctFrameText, None)
                 entry = tk.Entry(correctFrame, textvariable=correctText, width = textBoxParam[0],
                                  font=textBoxParam[1], fg=textBoxParam[4], bg=textBoxParam[5], relief=textBoxParam[7])
+                entry.insert(0, "Type Here")
                 entry.place(relx=textBoxParam[2], rely=textBoxParam[3])
+                entry.bind("<Button-1>", self.clearTextBox)
                 textBoxes.append([entry, correctFunctionName])
+
 
         return textBoxes
 
