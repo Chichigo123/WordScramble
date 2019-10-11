@@ -14,11 +14,11 @@ def getCorrectFrame( parentFrames, widgetText, state):
     return correctFrame, correctText, correctFunctionName
 
 
-def checkIfWordIsFound(event, wordAnswers, textBoxes):
-    textBoxes = numpy.array(textBoxes, dtype=object)
-    textBox = textBoxes[textBoxes[:, 1] == 'GameStartFrame1TextBox0']
-    if textBox.shape[0] > 0 and textBox[0][0].get().upper() in wordAnswers:
-        textBox[0][0].delete(0, tk.END)
+def checkIfWordIsFound(gameInput, wordAnswers):
+    if gameInput in wordAnswers:
+        return True
+    return False
+
 
 def verifyPlayerDetails(text, action):
     if action == 'VerifyNameContent' and text == '':
@@ -27,3 +27,6 @@ def verifyPlayerDetails(text, action):
     else:
         messagebox.showinfo("Player Details Successful", f"Welcome Player {text}")
         return True
+
+def prompt(text):
+    messagebox.showinfo("All Words Found", f"{text}")

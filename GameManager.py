@@ -36,10 +36,11 @@ class DerivedGameManager(BaseGameManager):
             self.currentFrames.currentButtons.configureButtonCallActions()
 
         if self.state == 'GameStart':
-            wordAnswers, wordAnswer = self.wordManager.updateWordsList('easy')
-            self.currentConfig.createWordGameLabelConfig(self.state, wordAnswers, wordAnswer)
+            self.wordAnswers, self.wordAnswer = self.wordManager.updateWordsList('easy')
+            self.currentConfig.createWordGameLabelConfig(self.state, self.wordAnswers, self.wordAnswer)
             self.currentWindow.window.bind('<Return>', lambda event:
-                                            utils.checkIfWordIsFound(event, wordAnswers, self.currentFrames.currentTextBoxes.textBoxes))
+                self.currentFrames.currentTextBoxes.receiveAndDeleteGameInput(event, self.wordAnswers))
+
         else:
             self.currentConfig.createLabelConfig(self.state)
 
@@ -71,9 +72,19 @@ class DerivedGameManager(BaseGameManager):
                     self.currentFrames.currentButtons.setStateOneStepBack(self.currentFrames.currentButtons.previousAction)
 
         else:
-            if self.state != self.currentFrames.currentButtons.action:
+            if self.state == 'GameStart':
+                if self.currentFrames.currentTextBoxes.gameInput is not None:
+                    gameInput = self.currentFrames.currentTextBoxes.gameInput
+                    if utils.checkIfWordIsFound(gameInput, self.wordAnswers):
+                        self.currentFrames.currentLabels.updateGameLabel(gameInput)
+                        if self.wordManager.updateAndCheckIfGuessedAll(gameInput):
+                            utils.prompt('Congratulations! Moving on to next word!')
+                    self.currentFrames.currentTextBoxes.setReceiveGameInput()
+
+            elif self.state != self.currentFrames.currentButtons.action:
                 self.state = self.currentFrames.currentButtons.action
                 self.updateConfiguration()
+
 
         self.currentWindow.window.after(1000, self.update_clock)
 

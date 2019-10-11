@@ -21,7 +21,10 @@ class BaseLabelManager():
         return labels
 
 class DerivedLabelManager(BaseLabelManager):
-
+    def updateGameLabel(self, gameInput):
+        for label, functionName in self.labels:
+            if label.cget("text") == gameInput:
+                label.configure(fg = 'black')
 
     def createBasicLabels(self, config, parentFrames, state):
         self.labels = super().createBasicLabels(config, parentFrames, state)

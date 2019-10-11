@@ -26,6 +26,15 @@ class BaseTextBoxManager():
         pass
 
 class DerivedTextBoxManager(BaseTextBoxManager):
+    def setReceiveGameInput(self,):
+        self.gameInput = None
+
+    def receiveAndDeleteGameInput(self, event, wordAnswers):
+        textBoxes = numpy.array(self.textBoxes, dtype=object)
+        textBox = textBoxes[textBoxes[:, 1] == 'GameStartFrame1TextBox0']
+        if textBox.shape[0] > 0 and textBox[0][0].get().upper() in wordAnswers:
+            self.gameInput = textBox[0][0].get().upper()
+        textBox[0][0].delete(0, tk.END)
 
     def getText(self, action, textBoxName):
         textBoxes = numpy.array(self.textBoxes, dtype=object)
@@ -44,6 +53,6 @@ class DerivedTextBoxManager(BaseTextBoxManager):
 
     def __init__(self, config, parentFrames, state):
         self.textBoxes = []
-
+        self.gameInput = None
         if config.textBoxConfig:
             self.createBasicTextBoxes(config.textBoxConfig, parentFrames, state)
