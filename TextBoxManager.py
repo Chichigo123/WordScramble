@@ -7,7 +7,7 @@ class BaseTextBoxManager():
 
     def clearTextBox(self, event):
         event.widget.delete(0, tk.END)
-        event.widget.configure(fg =  '#2A0110')
+        event.widget.configure(fg = '#000000')
 
     def createBasicTextBoxes(self, config, parentFrames, state):
         textBoxesParam = list(zip(config.get("width"), config.get("font"), config.get("relx"), config.get("rely"),

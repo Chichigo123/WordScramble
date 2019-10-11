@@ -6,7 +6,7 @@ class BaseLabelManager():
 
         pass
 
-    def createBasicLabels(self, config, parentFrames, state):
+    def createBasicLabels(self, config, parentFrames, state, ):
         labelsParam = list(zip(config.get("font"), config.get("bg"), config.get("relx"), config.get("rely"),
                                config.get("text"), config.get("fg")))
         labels = []
@@ -26,10 +26,13 @@ class DerivedLabelManager(BaseLabelManager):
             if label.cget("text") == gameInput:
                 label.configure(fg = 'black')
 
-    def createBasicLabels(self, config, parentFrames, state):
-        self.labels = super().createBasicLabels(config, parentFrames, state)
-
-        return self.labels
+    def createBasicLabels(self, config, parentFrames, state, playerLabel = False):
+        if not playerLabel:
+            self.labels = super().createBasicLabels(config, parentFrames, state)
+            return  self.labels
+        else:
+            self.playerLabels = super().createBasicLabels(config, parentFrames, state)
+            return self.playerLabels
 
     def __init__(self, config, parentFrames, state):
         self.labels = []

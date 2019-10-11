@@ -1,8 +1,17 @@
 import tkinter as tk
-
+['Name PlayerDetailsFrame0TextBox0', 'Age PlayerDetailsFrame0TextBox1',
+                                                'emailaddress PlayerDetailsFrame0TextBox2'],
 # Verify only the 'Name' Textbox
 specialStates = {'VerifyPlayerDetails': ['PlayerDetailsFrame0TextBox0']}
+textBoxNames = {'Name': 'PlayerDetailsFrame0TextBox0',
+                'Age': 'PlayerDetailsFrame0TextBox1',
+                'Email': 'PlayerDetailsFrame0TextBox2'}
 numberWordsPerColumn = 7
+
+defaulTextinTextBox = 'Type Here'
+numberPlayerDetailLabels = 5
+lastLevel = 'difficult'
+startingLevel = 'easy'
 
 class BaseConfigManager():
 
@@ -91,6 +100,8 @@ class DerivedConfigManager(BaseConfigManager):
         self.createLabelConfig(state)
         self.createTextBoxConfig(state)
 
+        self.playerLabelConfig =  {}
+
 
     def createWindowConfig(self, state):
 
@@ -149,28 +160,39 @@ class DerivedConfigManager(BaseConfigManager):
         fg = ['#FFFFFF'] * numberOfAnswers
 
         relxPos = .05
-        relyPos = 0.05
+        relyPos = 0.1
         if state == 'GameStart':
            for idx, word in enumerate(wordAnswers):
                 if (idx % numberWordsPerColumn == 0 and idx != 0):
                     relxPos += .25
-                    relyPos = .15
+                    relyPos = .2
                 else:
                     relyPos += .1
                 relx.append(relxPos)
                 rely.append(relyPos)
 
-                text.append(word + 'GameStartFrameLabel' + str(idx))
+                text.append(word + 'GameStartFrame0Label' + str(idx + numberPlayerDetailLabels))
 
         font.append(["Algerian", 35, "bold"])
         bg.append('#b2e9f0')
         relx.append(0.05)
         rely.append(0.03)
-        text.append(wordAnswer + 'GameStartFrameLabel' + str(numberOfAnswers))
+        text.append(wordAnswer + 'GameStartFrame0Label' + str(numberOfAnswers))
         fg.append('black')
 
 
         self.wordLabelConfig = super().createLabelConfig(font, bg, relx, rely, text, fg)
+
+    def createLabelConfigForPlayer(self, name, age, email, score, level):
+        self.playerLabelConfig = {
+            'font':  [["Arial", 10], ["Arial", 10], ["Arial", 10], ["Arial", 10], ["Arial", 10]],
+            'bg': ['#b2e9f0', '#b2e9f0', '#b2e9f0', '#b2e9f0', '#b2e9f0'],
+            'relx':  [.7, .7, .7, .7, .7],
+            'rely': [.02, .05, .08, .11, .14],
+            'text': [f"Name: {name} GameStartFrame0Label0", f"Age: {age} GameStartFrame0Label1",
+                    f"Email: {email} GameStartFrame0Label2", f"Score: {score } GameStartFrame0Label3", f"Level: {level} GameStartFrame0Label4"],
+            'fg': ['#733e2f', '#733e2f', '#733e2f', '#733e2f', '#733e2f']
+        }
 
     def createLabelConfig(self, state):
         self.labelConfig = {}
@@ -186,6 +208,7 @@ class DerivedConfigManager(BaseConfigManager):
                                       text = ['Name PlayerDetailsFrame0Label0', 'Age PlayerDetailsFrame0Label1',
                                               'Email PlayerDetailsFrame0Label2'],
                                       fg = ['#2A0100', '#2A0100', '#2A0100'])
+
 
     def createTextBoxConfig(self, state):
         self.textBoxConfig = []
